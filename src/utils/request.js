@@ -1,17 +1,17 @@
 import axios from 'axios'
+import QS from 'qs'; // 引入qs模块，用来序列化post类型的数据，后面会提到
+
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: process.env.BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
-
-console.log("aaa"+process.env)
-
+console.log(process.env)
 // request interceptor
 service.interceptors.request.use(
   config => {

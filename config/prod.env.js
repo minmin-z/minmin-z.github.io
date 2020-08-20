@@ -1,6 +1,6 @@
-//生产环境开发变量
+//生产环境
 
-module exports = {
-  //环境变量--指定生产环境
-  NODE_ENV = '"production"'
+module.exports = {
+  NODE_ENV:'"production"',
+  BASE_API:'"http://172.16.26.26:8072/msc-webapp"'
 }
