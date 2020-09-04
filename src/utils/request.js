@@ -1,28 +1,17 @@
 import axios from 'axios'
-import QS from 'qs'; // 引入qs模块，用来序列化post类型的数据，后面会提到
-
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import router from '../router'
 
-// create an axios instance
 const service = axios.create({
-  baseURL: process.env.BASE_API, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
+  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   timeout: 5000 // request timeout
 })
-console.log(process.env)
+
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // do something before request is sent
-
-    if (store.getters.token) {
-      // let each request carry token
-      // ['X-Token'] is a custom headers key
-      // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
-    }
+    
     return config
   },
   error => {
@@ -47,25 +36,21 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
-    // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 20000) {
+    if (res.code !== '0000') {
       Message({
         message: res.message || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
-
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+      if (res.code === '4444' ) {
         // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
+        MessageBox.confirm('尚未登录或用户登陆信息已失效!', '重新登录', {
+          confirmButtonText: '确定',
+          showCancelButton:false,
           type: 'warning'
         }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
+          store.dispatch('flag/getFlag',false)
+          router.push(`/login`)
         })
       }
       return Promise.reject(new Error(res.message || 'Error'))

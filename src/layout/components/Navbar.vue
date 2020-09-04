@@ -3,27 +3,35 @@
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <breadcrumb class="breadcrumb-container" />
-
+    <div class="home">
+      <i class="el-icon-s-home userIcon" style="font-size: 33px;"></i>
+      <router-link class='homeSpan' to="/">回到首页</router-link>
+    </div>
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+          
+          <div class="userCon">
+            <i class="el-icon-s-custom userIcon"></i>
+            <!-- <img src="../../assets/msc.png" class="user-avatar"></img> -->
+            <span class="userSpan">欢迎,{{userName}}</span>
+            <i class="el-icon-caret-bottom" />
+          </div>
+          <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+            <i class="el-icon-caret-bottom" />
+          </img> -->
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
+          <!-- <router-link to="/">
             <el-dropdown-item>
-              Home
+              首页
             </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
+          </router-link> -->
+          <a target="_blank" href="">
+            <el-dropdown-item>变更登录密码</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
+            <span style="display:block;">注销用户登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -35,11 +43,17 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import store from '../../store'
 
 export default {
   components: {
     Breadcrumb,
     Hamburger
+  },
+  data(){
+    return{
+      userName:this.$store.getters.name
+    }
   },
   computed: {
     ...mapGetters([
@@ -47,19 +61,48 @@ export default {
       'avatar'
     ])
   },
+  mounted(){
+    //获取用户信息
+    this.$store.dispatch('user/getInfo',{}).then( res => {
+    })
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+     logout() {
+        this.$store.dispatch('user/logout')
+        this.$store.dispatch('flag/getFlag', false)
+        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.userCon{
+  cursor: pointer;
+}
+.home{
+  position: absolute;
+  right: 170px;
+  top: 7px;
+  cursor: pointer;
+}
+.homeSpan{
+  font-size: 14px;
+  font-weight: bold;
+  color: #606297;
+}
+.userIcon{
+  font-size: 29px;
+  color: #4a98f9;
+  margin: 4px;
+  vertical-align: sub;
+}
+.userSpan{
+  font-weight: bold;
+}
 .navbar {
   height: 50px;
   overflow: hidden;

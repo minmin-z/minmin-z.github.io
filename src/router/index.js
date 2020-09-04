@@ -51,7 +51,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
     }]
   },
 
@@ -78,7 +78,7 @@ export const constantRoutes = [
   },
 
   {
-    path: '/form',
+    path: '/fom',
     component: Layout,
     children: [
       {
@@ -163,6 +163,10 @@ export const constantRoutes = [
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
+
+export const asyncRoutes = []
+
+
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

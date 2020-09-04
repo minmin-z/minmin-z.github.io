@@ -1,63 +1,48 @@
+
+
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+      <div class="form">
 
+     
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">登录</h3>
       </div>
-
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
+        <el-input ref="username" v-model="loginForm.username" placeholder="用户名" name="username" type="text" tabindex="1" autofocus="autofocus" auto-complete="on" @keyup.enter.native="toPwd"/>
       </el-form-item>
-
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input
-          :key="passwordType"
-          ref="password"
-          v-model="loginForm.password"
-          :type="passwordType"
-          placeholder="Password"
-          name="password"
-          tabindex="2"
-          auto-complete="on"
-          @keyup.enter.native="handleLogin"
-        />
+        <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType" placeholder="密码" name="password" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin"/>
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
-
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
-      </div>
-
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+      
+       </div>
     </el-form>
+    <div style="position:relative">
+        <div class="tips">
+          <span>2020 © MSC. Powerd By Kedauis.</span>
+        </div>
+      </div>
   </div>
 </template>
 
 <script>
 // import { validUsername } from '@/utils/validate'
-import { login } from '@/api/login'
+
 export default {
   name: 'Login',
   data() {
+    //自定义校验
     // const validateUsername = (rule, value, callback) => {
     //   if (!validUsername(value)) {
     //     callback(new Error('Please enter the correct user name'))
@@ -65,21 +50,14 @@ export default {
     //     callback()
     //   }
     // }
-    // const validatePassword = (rule, value, callback) => {
-    //   if (value.length < 6) {
-    //     callback(new Error('The password can not be less than 6 digits'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: ''
       },
       loginRules: {
-        // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        // password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        // username: [{ required: true, trigger: 'blur',message:'请输入用户名'}],
+        // password: [{ required: true, trigger: 'blur',message:'请输入密码'}]
       },
       loading: false,
       passwordType: 'password',
@@ -94,7 +72,19 @@ export default {
       immediate: true
     }
   },
+  mounted(){
+ //判断内外网
+      var href = window.location.href;
+      var io;  //内外网标识
+      if (href.indexOf("172.16.26.26") !== -1) {
+        io = "o";
+      } else {
+        io = "i";
+      }
+      this.$store.dispatch("flag/getIO",io)
+  },
   methods: {
+    //显示隐藏密码
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -105,20 +95,25 @@ export default {
         this.$refs.password.focus()
       })
     },
+    //回车跳下一个输入框
+    toPwd(){
+      this.$refs.password.focus()
+    },
+    //登录
     handleLogin() {
+     
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
+          this.$store.dispatch('user/login', this.loginForm).then((res) => {
+            // 登录成功的标志
+            this.$store.dispatch('flag/getFlag', true)
 
-          login({userId:11,pwd:22}).then( res => {
-            console.log(res)
+            this.$router.push({ path: this.redirect || '/' })
+            this.loading = false
+          }).catch(() => {
+            this.loading = false
           })
-          // this.$store.dispatch('user/login', this.loginForm).then(() => {
-          //   this.$router.push({ path: this.redirect || '/' })
-          //   this.loading = false
-          // }).catch(() => {
-          //   this.loading = false
-          // })
         } else {
           console.log('error submit!!')
           return false
@@ -133,9 +128,9 @@ export default {
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-$bg:#283443;
-$light_gray:#fff;
-$cursor: #fff;
+$bg:#dde3ec;
+$light_gray:#5a5a5a;
+$cursor: #5a5a5a;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
@@ -169,7 +164,7 @@ $cursor: #fff;
 
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    background: #dde3ec;
     border-radius: 5px;
     color: #454545;
   }
@@ -180,6 +175,12 @@ $cursor: #fff;
 $bg:#2d3a4b;
 $dark_gray:#889aa4;
 $light_gray:#eee;
+
+.form{
+    padding: 20px;
+    background-color: #eceef1;
+    border-radius: 10px;
+}
 
 .login-container {
   min-height: 100%;
@@ -197,14 +198,16 @@ $light_gray:#eee;
   }
 
   .tips {
+    margin-top: 10px;
     font-size: 14px;
     color: #fff;
     margin-bottom: 10px;
-
+    text-align: center;
     span {
       &:first-of-type {
         margin-right: 16px;
       }
+      color: #6c829e;
     }
   }
 
@@ -221,7 +224,7 @@ $light_gray:#eee;
 
     .title {
       font-size: 26px;
-      color: $light_gray;
+      color: #71b1f3;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;

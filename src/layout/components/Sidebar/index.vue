@@ -1,6 +1,7 @@
 <template>
   <div :class="{'has-logo':showLogo}">
-    <logo v-if="showLogo" :collapse="isCollapse" />
+    <img src="../../../assets/msc.png" alt="" class="imgLogo">
+    <!-- <logo v-if="showLogo" :collapse="isCollapse" /> -->
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
@@ -23,15 +24,23 @@ import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
+import { getMenuList } from '@/api/system'
 
 export default {
   components: { SidebarItem, Logo },
+  data(){
+    return {
+      menuList: []
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar'
     ]),
     routes() {
-      return this.$router.options.routes
+      console.log( this.$router)
+      console.log(this.$store)
+      return this.$store.getters.permission_routes
     },
     activeMenu() {
       const route = this.$route
@@ -51,6 +60,42 @@ export default {
     isCollapse() {
       return !this.sidebar.opened
     }
+  },
+  methods:{
+    //  getMenu(){
+    //   return new Promise( resolve => {
+    //     getMenuList().then( res =>{
+    //       let { data } = res
+    //       resolve(this.handleMenu(data,0)) 
+    //     })
+    //   }) 
+    // },
+    // //菜单的层级关系整理
+    // handleMenu(data,menuParentId){
+    //   let menuList = []
+    //   let children
+    //   data.forEach( (v,i) => {
+    //     v.hidden = false
+    //     v.meta = {}
+    //     v.meta.title = v.menuLabel
+    //     if( data[i].menuParentId == menuParentId){
+    //       let obj = data[i]
+    //       children = this.handleMenu( data, obj.menuId)
+    //       if(children.length > 0){
+    //         obj.children = children
+    //       }
+    //       menuList.push(obj)
+    //     }
+    //   })
+      
+    //   return menuList
+    // }
   }
 }
 </script>
+<style scoped>
+.imgLogo{
+  width: 100%;
+  padding: 3px;
+}
+</style>

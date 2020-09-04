@@ -2,17 +2,20 @@
   <div :class="classObj" class="app-wrapper">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar class="sidebar-container" />
-    <div class="main-container">
+    <div class="main-container" >
       <div :class="{'fixed-header':fixedHeader}">
         <navbar />
+        <tags-view v-if="false" />
       </div>
       <app-main />
+      <Footer class="footers"/>
     </div>
   </div>
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain } from './components'
+import { Navbar, Sidebar, AppMain, TagsView } from './components'
+import Footer from './components/Footer.vue'
 import ResizeMixin from './mixin/ResizeHandler'
 
 export default {
@@ -20,7 +23,12 @@ export default {
   components: {
     Navbar,
     Sidebar,
-    AppMain
+    AppMain,
+    TagsView,
+    Footer
+  },
+  mounted() {
+    console.log(111)
   },
   mixins: [ResizeMixin],
   computed: {
@@ -53,6 +61,12 @@ export default {
 <style lang="scss" scoped>
   @import "~@/styles/mixin.scss";
   @import "~@/styles/variables.scss";
+
+  .footers{
+    height: 30px;
+    padding-top: 7px;
+    box-shadow: 0 -2px 4px rgba(0, 21, 41, 0.08);
+  }
 
   .app-wrapper {
     @include clearfix;
