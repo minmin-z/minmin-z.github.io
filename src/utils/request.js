@@ -3,15 +3,22 @@ import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import router from '../router'
 
+import qs from 'qs'
+
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  timeout: 5000 // request timeout
+  timeout: 50000, // request timeout
+  //-----------------------设置为formData格式传参------------------------------------------------
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
 })
+
 
 // request interceptor
 service.interceptors.request.use(
   config => {
-    
+    config.data = qs.stringify(config.data) // 转为formdata数据格式
     return config
   },
   error => {
@@ -40,7 +47,7 @@ service.interceptors.response.use(
       Message({
         message: res.message || 'Error',
         type: 'error',
-        duration: 5 * 1000
+        duration: 3 * 1000
       })
       if (res.code === '4444' ) {
         // to re-login
@@ -63,7 +70,7 @@ service.interceptors.response.use(
     Message({
       message: error.message,
       type: 'error',
-      duration: 5 * 1000
+      duration: 3 * 1000
     })
     return Promise.reject(error)
   }

@@ -5,7 +5,7 @@
     <div class="main-container" >
       <div :class="{'fixed-header':fixedHeader}">
         <navbar />
-        <tags-view v-if="false" />
+        <tags-view v-if="true" />
       </div>
       <app-main />
       <Footer class="footers"/>

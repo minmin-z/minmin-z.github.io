@@ -8,6 +8,6 @@ const getters = {
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
   permission_routes: state => state.permission.routes,
-  io:state => state.io.io
+  io:state => state.flag.io
 }
 export default getters
