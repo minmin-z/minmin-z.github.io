@@ -60,6 +60,7 @@ module.exports = {
     ]
   },
   chainWebpack(config) {
+    // config.entry('main').add('babel-polyfill');
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin('preload').tap(() => [
       {
@@ -130,5 +131,8 @@ module.exports = {
           config.optimization.runtimeChunk('single')
         }
       )
-  }
+  },
+  // transpileDependencies: [
+  //   'biyi-admin'  // 指定对第三方组件也进行babel-polyfill处理
+  // ]
 }

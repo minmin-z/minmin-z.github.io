@@ -44,7 +44,6 @@ export default {
       'sidebar'
     ]),
     routes() {
-      console.log(this.$store)
       
       return this.$store.getters.permission_routes
     },
@@ -68,34 +67,7 @@ export default {
     }
   },
   methods:{
-    //  getMenu(){
-    //   return new Promise( resolve => {
-    //     getMenuList().then( res =>{
-    //       let { data } = res
-    //       resolve(this.handleMenu(data,0)) 
-    //     })
-    //   }) 
-    // },
-    // //菜单的层级关系整理
-    // handleMenu(data,menuParentId){
-    //   let menuList = []
-    //   let children
-    //   data.forEach( (v,i) => {
-    //     v.hidden = false
-    //     v.meta = {}
-    //     v.meta.title = v.menuLabel
-    //     if( data[i].menuParentId == menuParentId){
-    //       let obj = data[i]
-    //       children = this.handleMenu( data, obj.menuId)
-    //       if(children.length > 0){
-    //         obj.children = children
-    //       }
-    //       menuList.push(obj)
-    //     }
-    //   })
-      
-    //   return menuList
-    // }
+    
   }
 }
 </script>

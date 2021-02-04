@@ -43,3 +43,34 @@ export function saveBtnInMenu(data){
     data
   })
 }
+
+//查看角色下的菜单按钮
+export function btnInRoleMenu(roleId,menuId){
+  return request({
+    url:'/role/enableRoleMenuBtnFromBtn',
+    method:'get',
+    params:{
+      roleId:roleId,
+      menuId:menuId
+    }
+  })
+}
+//给角色下的菜单赋按钮权限
+export function saveBtnInRoleMenu(data){
+  return request({
+    url:'/role/saveRoleMenuBtn',
+    method:'post',
+    data
+  })
+}
+
+//获取当前登录人某菜单下的按钮
+export function userMenuBtn(menuId){
+  return request({
+    url:'/user/enableUserMenuBtn',
+    method:'get',
+    params:{
+      menuId:menuId
+    }
+  })
+}

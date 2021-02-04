@@ -12,6 +12,9 @@ const state = getDefaultState()
 const mutations = {
   SET_NAME: (state, name) => {
     state.name = name
+  },
+  USER_INFO:(state, info) => {
+    state.userInfo = info
   }
 }
 
@@ -41,10 +44,9 @@ const actions = {
         if (!data) {
           return reject('无用户信息')
         }
-
         const { userName } = data
-
         commit('SET_NAME', userName)
+        commit('USER_INFO',data)
         resolve(data)
       }).catch(error => {
         reject(error)

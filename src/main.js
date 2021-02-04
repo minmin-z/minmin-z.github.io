@@ -18,6 +18,8 @@ import $ from 'jquery' //引入jquery
 
 import '@/plugins/ztree/css/zTreeStyle/zTreeStyle.css'
 
+import 'babel-polyfill';
+
 import axios from 'axios'
 axios.defaults.withCredentials=true;//让ajax携带cookie
 Vue.prototype.$axios = axios;

@@ -1,6 +1,6 @@
 import { asyncRoutes, constantRoutes } from '@/router'
 
-import { getMenuList } from '@/api/system/menuList'
+import { getMenuList, userMenuBtn } from '@/api/system/menuList'
 
 import Layout from '@/layout'
 /**
@@ -50,7 +50,7 @@ export function filterAsyncRoutes(routes, roles) {
           // 'name':v.menuLabel ,
           "meta":{
             'title':v.menuLabel,
-            'icon':v.menuIconNew
+            'icon':v.menuIcon,
           },
           children:[]
         }
@@ -61,11 +61,9 @@ export function filterAsyncRoutes(routes, roles) {
             let childMenu = {
               'menuId':data[k].menuId,
               'path':data[k].menuAction,
-              // 'component': ()=> import(`${data[k].componentName}`),
-              // 'name':data[k].menuLabel ,
               "meta":{
                 'title':data[k].menuLabel,
-                'icon':data[k].menuIconNew
+                'icon':data[k].menuIcon,
               },
             }
             a.children.push(childMenu)
@@ -115,7 +113,10 @@ const mutations = {
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
     // state.routes = constantRoutes.concat(routes)
-    state.routes = constantRoutes
+    state.routes = routes
+  },
+  SET_BTNSLIST: (state, btnsList) => {
+    state.btnsList = btnsList
   }
 }
 
@@ -124,7 +125,7 @@ const actions = {
     return new Promise(resolve => {
       let accessedRoutes = []
       getMenuList().then( res =>{
-        console.log(res)
+        // console.log(res)
         let { data } = res
         let list = handleMenu(data,0)
         accessedRoutes = list
@@ -138,6 +139,17 @@ const actions = {
       // }
       // commit('SET_ROUTES', accessedRoutes)
       // resolve(accessedRoutes)
+    })
+  },
+  getBtnList( { commit },menuId){
+    return new Promise(resolve => {
+      userMenuBtn(menuId).then( res => {
+        console.log(res)
+        let { data } = res
+        commit('SET_BTNSLIST', data)
+        resolve()
+        
+      })
     })
   }
 }

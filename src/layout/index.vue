@@ -5,7 +5,8 @@
     <div class="main-container" >
       <div :class="{'fixed-header':fixedHeader}">
         <navbar />
-        <tags-view v-if="true" />
+        <!-- <tags-view v-if="true" /> -->
+        
       </div>
       <app-main />
       <Footer class="footers"/>
@@ -17,6 +18,7 @@
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import Footer from './components/Footer.vue'
 import ResizeMixin from './mixin/ResizeHandler'
+import  Btns  from '@/components/btnsGroup'
 
 export default {
   name: 'Layout',
@@ -25,10 +27,11 @@ export default {
     Sidebar,
     AppMain,
     TagsView,
+    Btns,
     Footer
   },
   mounted() {
-    console.log(111)
+    // console.log(this.$store)
   },
   mixins: [ResizeMixin],
   computed: {

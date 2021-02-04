@@ -52,7 +52,7 @@ export default {
         },
         callback: {
             onClick: function (event, treeId, treeNode) {
-                this.treeObj.checkNode(treeNode, true, true);
+                
             }
         }
       },
@@ -61,15 +61,8 @@ export default {
   },
   mounted(){
     this.getMenu()
-    this.test()
   },
   methods: {
-    test(){
-      let arr1 = JSON.stringify([1,2,3,4])
-      let arr2 = JSON.stringify([2,3,4,5])
-      console.log(arr1)
-      console.log(arr2)
-    },
      //获取菜单信息
     getMenu(){
       loadMenusTree().then( res => {

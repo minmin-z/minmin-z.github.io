@@ -78,7 +78,7 @@ export const constantRoutes = [
         path: 'role',
         name: 'Role',
         component: () => import('@/views/system/role/roleList'),
-        meta: { title: '角色管理', icon: 'el-icon-user-solid' }
+        meta: { title: '角色管理', icon: 'el-icon-user-solid'}
       }
     ]
   },

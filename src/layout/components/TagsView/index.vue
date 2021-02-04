@@ -64,7 +64,6 @@ export default {
   mounted() {
     this.initTags()
     this.addTags()
-    console.log(this.$store)
   },
   methods: {
     isActive(route) {
@@ -103,7 +102,7 @@ export default {
       for (const tag of affixTags) {
         // Must have tag name
         if (tag.name) {
-          // this.$store.dispatch('tagsView/addVisitedView', tag)
+          this.$store.dispatch('tagsView/addVisitedView', tag)
         }
       }
     },

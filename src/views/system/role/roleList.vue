@@ -1,20 +1,24 @@
 <template>
   <div class="app-container">
+    <Btns @btnEvent='btnEventFn'/>
+
     <el-row>
       <!-- <el-input v-model="queryForm.btnName" placeholder="请输入按钮名称"></el-input> -->
       <!-- <el-button type="primary" @click="query"><i class="el-icon-search"></i>查询</el-button> -->
       <el-button type="success" @click="add"><i class="el-icon-circle-plus-outline"></i>添加</el-button>
+      
     </el-row>
     <el-table :data="roleList" border fit style="width: 100%" :height="getHeight" @row-click="rowClick" highlight-current-row
       ref="roleTable" :header-cell-style="{background:'#f5f5f5'}">
       <el-table-column type="selection" width="50" align="center"></el-table-column>
       <el-table-column prop="roleDesc" label="角色"  width="300"></el-table-column>
       <el-table-column  label="状态" prop="isEnableName"  width="120"></el-table-column>
-      <el-table-column label="操作" width="180">
+      <el-table-column label="操作" width="400">
         <template slot-scope="scope">
           <el-button title="修改" type="warning" icon="el-icon-edit" size="mini"  @click="edit(scope.row)"></el-button>
           <el-button title="删除" type="danger" icon="el-icon-delete" size="mini" @click="del(scope.row)"></el-button>
-          <el-button title="设置权限" class="lockBtn"  icon="el-icon-lock" size="mini" @click="setFn(scope.row)"></el-button>
+          <el-button title="设置菜单权限" class="lockBtn"  icon="el-icon-lock" size="mini" @click="setFn(scope.row)"></el-button>
+          <el-button title="按钮权限" class="" type="primary" icon="el-icon-setting" size="mini" @click="showRoleMenuFn(scope.row)"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -44,15 +48,24 @@
     <el-dialog title="设置权限" v-if="setMenuShow" :visible.sync="setMenuShow" width="400px" :close-on-click-modal="false" :destroy-on-close="true" top="5vh">
        <SetTree :roleId="roleId" @closeFn='closeFn'/>
     </el-dialog>
+    <!-- 角色菜单 -->
+    <el-dialog title="按钮权限" v-if="showRoleMenu" :visible.sync="showRoleMenu" width="400px" :close-on-click-modal="false" :destroy-on-close="true">
+       <RoleMenu :roleId="roleId" @closeFn="closeRoleMenu" />
+      
+    </el-dialog>
   </div>
 </template>
 <script>
 import { getRoleList, isExistFn, saveRole, delRole } from '@/api/system/roles'
 import EditRole from './editRole'
 import SetTree from './roleTree'
+import RoleMenu from '../menu/roleMenu'
+
+import  Btns  from '@/components/btnsGroup'
+
 export default {
   name:'',
-  components:{ EditRole, SetTree },
+  components:{ EditRole, SetTree, RoleMenu, Btns },
   computed:{
     getHeight(){
       return document.body.clientHeight - 205
@@ -84,6 +97,7 @@ export default {
       addShow:false,
       editShow:false,
       setMenuShow:false,
+      showRoleMenu:false,
       addForm:{
         roleDesc:'',
         isEnable:true,
@@ -101,6 +115,14 @@ export default {
     this.getRole()
   },
   methods: {
+    btnEventFn(e){
+      this[e]()
+    },
+    //按钮权限
+    showRoleMenuFn(row){
+      this.roleId = row.roleId
+        this.showRoleMenu = true
+    },
     //获取角色信息
     getRole(){
       this.listLoading = true
@@ -109,6 +131,7 @@ export default {
         this.roleList = res.data
         this.pagetotal = res.count
         this.listLoading = false
+        
       })
     },
     //添加角色
@@ -165,6 +188,7 @@ export default {
     },
     //单击行勾选
     rowClick(row){
+      console.log(row)
        this.$refs.roleTable.toggleRowSelection(row);
     },
     //关闭修改弹窗
@@ -174,6 +198,10 @@ export default {
     //关闭设置权限弹窗
     closeFn(){
       this.setMenuShow = false
+    },
+    //关闭按钮权限
+    closeRoleMenu(){
+      this.showRoleMenu = false
     },
     //取消
     resetForm(formName) {

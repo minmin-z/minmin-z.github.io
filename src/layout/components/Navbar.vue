@@ -63,7 +63,6 @@ export default {
     ])
   },
   mounted(){
-    console.log(process.env)
     //获取用户信息
     this.$store.dispatch('user/getInfo',{}).then( res => {
     })

@@ -2,7 +2,7 @@
   <div v-if="!item.hidden">
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
-        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
+        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}" @click="getBtns(item.menuId,item)">
         <!-- <el-menu-item :index="item.menuId + '' " :class="{'submenu-title-noDropdown':!isNest}"> -->
           <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
         </el-menu-item>
@@ -10,9 +10,9 @@
     </template>
 
     <!-- <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body> -->
-    <el-submenu v-else ref="subMenu" :index="item.menuId + '' " popper-append-to-body>
+    <el-submenu v-else ref="subMenu" :index="item.menuId + '' " popper-append-to-body >
       <template slot="title">
-        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
+        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title"  />
       </template>
       <sidebar-item
         v-for="child in item.children"
@@ -60,6 +60,8 @@ import Item from './Item'
 import AppLink from './Link'
 import FixiOSBug from './FixiOSBug'
 
+
+
 export default {
   name: 'SidebarItem',
   components: { Item, AppLink },
@@ -81,13 +83,17 @@ export default {
   },
   created(){
     console.log(this.item)
-    console.log(this.basePath)
   },
   data() {
     this.onlyOneChild = null
     return {}
   },
   methods: {
+    //获取菜单下的按钮
+    getBtns(menuId,item){
+      console.log(item)
+      this.$store.dispatch('permission/getBtnList',menuId)
+    },
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {

@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { deepClone } from '@/utils/transform'
+
 export default {
   name: 'App',
   //将方法导出
@@ -18,6 +20,7 @@ export default {
       isReload: true
     }
   },
+  
   methods:{
     //实现页面局部刷新的方法
     reload(){

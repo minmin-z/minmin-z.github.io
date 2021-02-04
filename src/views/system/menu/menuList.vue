@@ -29,7 +29,10 @@
               <el-radio :label="2">新标签</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="图标" prop="menuIconNew">
+          <el-form-item label="图标" prop="menuIcon">
+            <el-input v-model="ruleForm.menuIcon" placeholder=""></el-input>
+          </el-form-item>
+          <!-- <el-form-item label="" prop="menuIconNew">
            <el-upload
               action="#"
               ref='upload'
@@ -46,22 +49,13 @@
             <el-dialog :visible.sync="dialogVisible">
               <img width="100%" :src="dialogImageUrl" alt="">
             </el-dialog>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="菜单路径" prop="menuAction">
             <el-input v-model="ruleForm.menuAction"></el-input>
           </el-form-item>
           <el-form-item label="排序" prop="levelId">
             <el-input v-model="ruleForm.levelId"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="组件名称" prop="componentName">
-            <el-input v-model="ruleForm.componentName"></el-input>
-          </el-form-item>
-          <el-form-item label="组件位置" prop="componentPath">
-            <el-input v-model="ruleForm.componentPath"></el-input>
-          </el-form-item>
-          <el-form-item label="重定向位置" prop="redirectPath">
-            <el-input v-model="ruleForm.redirectPath"></el-input>
-          </el-form-item> -->
           <el-form-item label="菜单描述" prop="menuDesc">
             <el-input type="textarea" v-model="ruleForm.menuDesc"></el-input>
           </el-form-item>
@@ -105,13 +99,6 @@ export default {
   //局部刷新方法
   inject: ['reload'],
   data(){
-    // let isExist = (rule, val, callback) =>{
-    //   if(val == "" && this.ruleForm.isLeaf == "1"){
-    //     callback(new Error("请输入目录的重定向位置!")) 
-    //   }else{
-    //     callback()
-    //   }
-    // }
     return {
       maxHeight:document.body.clientHeight - 120,
       fileList:[], //图片列表
@@ -126,12 +113,10 @@ export default {
           menuLabel: '',
           menuId:'',
           isLeaf: '',
+          menuIcon:'',
           menuIconNew: '',
           menuAction: '',
           levelId:'',
-          // componentName: '',
-          // componentPath:'',
-          // redirectPath:'',
           menuDesc: '',
           isEnable: true,
           menuParentId:'',//菜单的父id
@@ -146,21 +131,9 @@ export default {
           isLeaf: [
             { required: true, message: '请选择菜单类型', trigger: 'change' },
           ],
-          // redirectPath: [
-          //   { required: true, validator: isExist, trigger: 'blur' },
-          // ],
           levelId: [
             { required: true, message: '请输入排序', trigger: 'blur' },
           ],
-          // menuAction: [
-          //   { required: true, message: '请输入页面路径', trigger: 'blur' },
-          // ],
-          // componentName: [
-          //   { required: true, message: '请输入组件名称', trigger: 'blur' },
-          // ],
-          // componentPath: [
-          //   { required: true, message: '请输入组件位置', trigger: 'blur' },
-          // ],
         },
       //---------------树结构-------------------------
       setting:{
@@ -194,7 +167,7 @@ export default {
                   this.used = true
                 }
                 this.clickTree(treeNode)
-                // isWriteMenuAction( treeNode["isLeaf"] );
+                
             }
         }
       },
@@ -305,12 +278,26 @@ export default {
         Object.keys(this.ruleForm).forEach( v => {
           this.ruleForm[v] = nodes[v]
         })
+        // if(nodes.menuIconNew != ''){
+        //   this.fileList.push({url:nodes.menuIconNew})
+        //   document.getElementsByClassName("el-upload--picture-card")[0].style.display = 'none'
+        // }else{
+        //   this.fileList = []
+        //   document.getElementsByClassName("el-upload--picture-card")[0].style.display = ''
+        // }
       },
     //清空表单
       resetForm(formName) {
         this.$refs[formName].resetFields();
         // this.handleRemove(this.file)
       },
+      // 关闭弹窗
+      closeFn(){
+        this.dialogFormVisible = false
+      },
+
+//--------------------base64按钮图标上传相关方法-----------------------------------------------------------------------------
+
     //自定义上传,需将action属性,设置为 "#"
       upload(data){
         var _this = this
@@ -339,10 +326,7 @@ export default {
         this.dialogImageUrl = file.url;
         this.dialogVisible = true;
       },
-      // 关闭弹窗
-      closeFn(){
-        this.dialogFormVisible = false
-      }
+      
 
   }
 }

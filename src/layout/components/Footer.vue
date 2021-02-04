@@ -8,7 +8,6 @@
 export default {
   name:'Footer',
   mounted(){
-    console.log(222)
   }
 
 }

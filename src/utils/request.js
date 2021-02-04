@@ -5,8 +5,11 @@ import router from '../router'
 
 import qs from 'qs'
 
+let io = localStorage.getItem("IO")
+
+
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: io == 'i'?process.env.VUE_APP_BASE_API_IN : process.env.VUE_APP_BASE_API_OUT, // url = base url + request url
   timeout: 50000, // request timeout
   //-----------------------设置为formData格式传参------------------------------------------------
   headers: {
@@ -59,6 +62,7 @@ service.interceptors.response.use(
           store.dispatch('flag/getFlag',false)
           router.push(`/login`)
         })
+        return false
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
