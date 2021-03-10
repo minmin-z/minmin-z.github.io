@@ -30,7 +30,7 @@ router.beforeEach(async(to, from, next) => {
       const hasGetUserInfo = store.getters.name
       if (hasGetUserInfo) {
 
-        const accessRoutes = await store.dispatch('permission/generateRoutes', '')
+        let accessRoutes = store.getters.permission_routes
         router.addRoutes(accessRoutes)
         next()
       } else {

@@ -2,11 +2,13 @@
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 
+const webpack = require('webpack') //jquery
+
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'vue Admin Template' // page title
+const name = defaultSettings.title  // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -27,7 +29,8 @@ module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV === 'development',
+  // lintOnSave: process.env.NODE_ENV === 'development',
+  lintOnSave:false,
   productionSourceMap: false,
   devServer: {
     port: port,
@@ -46,9 +49,18 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
-    }
+    },
+    //jquery
+    plugins: [
+      new webpack.ProvidePlugin({
+        $:"jquery",
+        jQuery:"jquery",
+        "windows.jQuery":"jquery"
+      })
+    ]
   },
   chainWebpack(config) {
+    // config.entry('main').add('babel-polyfill');
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin('preload').tap(() => [
       {
@@ -119,5 +131,8 @@ module.exports = {
           config.optimization.runtimeChunk('single')
         }
       )
-  }
+  },
+  // transpileDependencies: [
+  //   'biyi-admin'  // 指定对第三方组件也进行babel-polyfill处理
+  // ]
 }

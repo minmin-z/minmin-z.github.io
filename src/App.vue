@@ -1,11 +1,34 @@
 <template>
   <div id="app">
-    <router-view />
+    <router-view v-if="isReload" />
   </div>
 </template>
 
 <script>
+import { deepClone } from '@/utils/transform'
+
 export default {
-  name: 'App'
+  name: 'App',
+  //将方法导出
+  provide(){
+    return{
+      reload: this.reload
+    }
+  },
+  data(){
+    return {
+      isReload: true
+    }
+  },
+  
+  methods:{
+    //实现页面局部刷新的方法
+    reload(){
+      this.isReload = false
+      this.$nextTick(function(){
+        this.isReload = true
+      })
+    }
+  }
 }
 </script>

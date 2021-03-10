@@ -17,10 +17,10 @@
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">Refresh</li>
-      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">Close</li>
-      <li @click="closeOthersTags">Close Others</li>
-      <li @click="closeAllTags(selectedTag)">Close All</li>
+      <!-- <li @click="refreshSelectedTag(selectedTag)">Refresh</li> -->
+      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">关闭</li>
+      <li @click="closeOthersTags">关闭其他</li>
+      <li @click="closeAllTags(selectedTag)">关闭全部</li>
     </ul>
   </div>
 </template>
@@ -44,9 +44,9 @@ export default {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
     },
-    routes() {
-      return this.$store.state.permission.routes
-    }
+    // routes() {
+    //   return this.$store.state.permission.routes
+    // }
   },
   watch: {
     $route() {
@@ -55,8 +55,7 @@ export default {
     },
     visible(value) {
       if (value) {
-        document.body.addEventListener('click', this.closeMenu
-        )
+        document.body.addEventListener('click', this.closeMenu)
       } else {
         document.body.removeEventListener('click', this.closeMenu)
       }
@@ -75,6 +74,9 @@ export default {
     },
     filterAffixTags(routes, basePath = '/') {
       let tags = []
+      if(this.routes){
+
+     
       routes.forEach(route => {
         if (route.meta && route.meta.affix) {
           const tagPath = path.resolve(basePath, route.path)
@@ -92,6 +94,7 @@ export default {
           }
         }
       })
+       }
       return tags
     },
     initTags() {

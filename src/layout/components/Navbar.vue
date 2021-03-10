@@ -3,7 +3,7 @@
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <breadcrumb class="breadcrumb-container" />
-    <div class="home">
+    <div class="home" v-if="showHome">
       <i class="el-icon-s-home userIcon" style="font-size: 33px;"></i>
       <router-link class='homeSpan' to="/">回到首页</router-link>
     </div>
@@ -52,7 +52,8 @@ export default {
   },
   data(){
     return{
-      userName:this.$store.getters.name
+      userName:this.$store.getters.name,
+      showHome:process.env.VUE_APP_showHome
     }
   },
   computed: {

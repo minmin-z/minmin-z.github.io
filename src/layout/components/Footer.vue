@@ -8,7 +8,6 @@
 export default {
   name:'Footer',
   mounted(){
-    console.log(222)
   }
 
 }
@@ -17,6 +16,8 @@ export default {
 <style scoped>
   .page-footer-inner{
     text-align: center;
+    color: #676565;
+    font-size: 13px;
   }
   a{
     color:#2caffb

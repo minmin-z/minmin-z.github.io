@@ -81,6 +81,7 @@ export default {
       } else {
         io = "i";
       }
+      localStorage.setItem("IO",io)
       this.$store.dispatch("flag/getIO",io)
   },
   methods: {

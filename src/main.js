@@ -4,7 +4,6 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
 import '@/styles/index.scss' // global css
 
@@ -15,6 +14,11 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // 导航
 
+import $ from 'jquery' //引入jquery
+
+import '@/plugins/ztree/css/zTreeStyle/zTreeStyle.css'
+
+import 'babel-polyfill';
 
 import axios from 'axios'
 axios.defaults.withCredentials=true;//让ajax携带cookie
@@ -28,7 +32,7 @@ Vue.prototype.$axios = axios;
  * please remove it before going online ! ! !
  */
 
-Vue.use(ElementUI, { locale })
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
